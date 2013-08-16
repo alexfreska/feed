@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>stream.io</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<script data-main="js/main" src="js/lib/require.js"></script>
+  <div id="container">
+    <div id="roomHandler">
+	<form id="signin" action="#">
+		<label for="username">Username: </label>
+		<input type="text" id="username">
+		<button class="login">Login</button>
+	</form>
+	<form id="addRoom" action="#">	
+		<input type="text" id="newRoom">
+		<button class="submit" style="visibility:hidden;position:absolute;">Add</button>
+	</form>
+	<div id="roomList"></div>
+    </div>
+  </div>
+</body>
+</html>

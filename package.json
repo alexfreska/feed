@@ -1,0 +1,12 @@
+{
+    "name": "backbone-app",
+    "version": "0.0.1",
+    "description": "Backbone App",
+    "dependencies": {
+        "socket.io": "latest",
+        "mongoose": "latest",
+        "underscore": "latest",
+        "express": "latest",
+        "path": "~0.4.9"
+    }
+}
