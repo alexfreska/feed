@@ -1,14 +1,14 @@
-# stream.io
-> Chat system for power users.
+# feed.io
+> Robust communication system.
 
-**stream.io** is a socket based chat system that supports productivity and collaboration through an automated stream system. Content is displayed in sorted streams with absolutely zero setup on the user's part.
+**feed.io** is a socket based chat system that supports productivity and collaboration through an automated stream system. Content is displayed in sorted streams with absolutely zero setup on the user's part.
 
 ## Command Line
 
 ### Install
 
-    $ git clone https://github.com/alexfreska/stream.io.git
-    $ cd stream.io
+    $ git clone https://github.com/alexfreska/feed.io.git
+    $ cd feed.io
     $ npm install 
     $ node server.js
     
