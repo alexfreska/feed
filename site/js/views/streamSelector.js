@@ -16,7 +16,7 @@ define(function(require) {
             s.name = args.name;
             s.class = s.name+'Stream';
             s.$el.addClass(s.name+'Stream');
-            s.$el.text(s.name);
+            s.$el.text('#'+s.name);
 
         },
         open: function () {

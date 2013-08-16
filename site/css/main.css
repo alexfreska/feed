@@ -23,16 +23,20 @@
 }
 .selectorItem {
     float: left;
-    margin: 5px;
+    margin: 1px 5px 1px 5px;
+    font-style: italic;
 }
 .streamSelectors {
   border: 1px solid black;
-  margin: 5px;
-  height: 25px;
+  height: 64px;
   width: 100%;
+  margin-bottom: -7px;
+  margin-left: 5px;
   position: absolute;
   bottom: 0px;
   z-index: 3;
+  overflow: scroll;
+  background: #f3f3f3;
 }
 .stream {
   position: relative;
