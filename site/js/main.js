@@ -1,13 +1,13 @@
 requirejs.config({
-	paths: {
-	    'jquery'		: 'lib/jquery.min',
-	    'underscore'	: 'lib/underscore-min',
-	    'backbone'		: 'lib/backbone-min',
-	    'socketio'		: '../socket.io/socket.io',
-        'text'			: 'lib/text'
-	},
-	shim: {
-		'underscore': {
+    paths: {
+        'jquery'        : 'lib/jquery.min',
+        'underscore'    : 'lib/underscore-min',
+        'backbone'      : 'lib/backbone-min',
+        'socketio'      : '../socket.io/socket.io',
+        'text'          : 'lib/text'
+    },
+    shim: {
+        'underscore': {
             exports     : '_'
         },  
         'socketio': {
@@ -28,13 +28,13 @@ requirejs.config({
 
             }
         }
-	}
+    }
 });
 
 define(function(require) {
     var App = require('app');
 
 
-	App.initialize();
+    App.initialize();
 
 })

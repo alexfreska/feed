@@ -32,7 +32,7 @@ define(function(require) {
 
         //grab room and add class
         s.room = args.room;
-        s.$el.addClass(s.room);
+        s.$el.addClass(s.room+'Selec');
         s.$el.attr('id',s.room);
 
         s.$el.append(this.template());
@@ -62,6 +62,12 @@ define(function(require) {
             }
             else {
                 s.process(data);
+            }
+        });
+
+        s.$('.input').keypress(function (e) {
+            if (e.keyCode == 13) {
+                s.submit();
             }
         });
 

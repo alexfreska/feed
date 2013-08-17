@@ -13,7 +13,7 @@ define(function(require) {
         initialize: function (args) {
             var s = this;
             s.room = args.room;
-            s.class = '.' + s.room;
+            s.class = '.' + s.room + 'Selec';
             s.$el.html(s.room);
             console.log('in selector');
         },

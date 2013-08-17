@@ -1,14 +1,24 @@
+body {
+    font-family: 'Verdana';
+    color: #545454;
+}
+input {
+    color: #545454;
+}
+#signin {
+    margin: 5px;
+}
 .room {
   position: relative;
   display: none;
+  width: 80%;
 }
 .streams {
   position: relative;
 }
 .streamContainer {
-  border: 1px solid black;
   height: 500px;
-  width: 300px;
+  width: 500px;
   margin: 5px;
   float: left;
   overflow: hidden;
@@ -18,36 +28,37 @@
 .secondary {
     position: relative;
     height: 500px;
-    width: 300px;
     float: left;
 }
 .selectorItem {
     float: left;
-    margin: 1px 5px 1px 5px;
+    padding: 1px 5px 1px 5px;
     font-style: italic;
 }
 .streamSelectors {
-  border: 1px solid black;
-  height: 64px;
-  width: 100%;
-  margin-bottom: -7px;
+  height: 39px;
+  width: 500px;
+  margin-bottom: 0px;
   margin-left: 5px;
   position: absolute;
   bottom: 0px;
   z-index: 3;
   overflow: scroll;
-  background: #f3f3f3;
 }
 .stream {
   position: relative;
   display: block;
   height: 90%;
   overflow: scroll;
+  width: 100%;
 }
 #roomList {
-  border: 1px solid black;
-  height: 300px;
-  width: 100px;
+  width: 100%;
+}
+.login {
+    background: #f3f3f3;
+    border-radius: 2px; 
+    border: 1px solid gray;
 }
 .content {
   padding: 5px;
@@ -57,7 +68,10 @@
   bottom: 0px;
 }
 #newRoom {
-  width: 95px;
+  width: 90%;
+  margin: 5px; 
+  height: 20px;
+  font-size: 20px;
 }
 .posts {
   position: absolute;
@@ -74,13 +88,21 @@
 }
 .listItem {
   display: block;
-  height: 20px;
+  padding: 5px;
+  font-size: 20px;
 }
 .input {
   height: 20px;
   border: 1px solid black;
   margin: 5px;
   width: 90%;
+}
+textarea.input {
+    width: 480px;
+    margin: 5px;
+    position: absolute;
+    bottom: 0px;
+    height: 35px;
 }
 .submit {
   background: blue;
@@ -90,15 +112,24 @@
   float: left;
 }
 .selected {
-  background: blue;
+  background: #f3f3f3;
 
 }
 .show {
   display: inline;
 
 }
+#username {
+    width: 40%;
+}
+#userInfo {
+    font-style: italic;
+    padding: 10px;
+    font-weight: 500;
+}
 #roomHandler {
   float: left;
   display: inline;
+  width: 15%;
 
 }

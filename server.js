@@ -5,7 +5,8 @@ var     application_root    = __dirname,
         mongoose            = require('mongoose'),
         http                = require('http'),
         _                   = require('underscore'),
-	Schema 	            = mongoose.Schema;
+        Schema              = mongoose.Schema;
+
 var app     = module.exports    
             = express(), 
     server  = http.createServer(app), 
@@ -57,18 +58,18 @@ mongoose.connect(uristring);
 //Schemas
 
 var Post = new mongoose.Schema({
-    type  	    : String, 
+    type        : String, 
     text            : String,
-    deleted 	    : { type: Number, default: 0 }, 
-    updated 	    : { type: Number, default: 0 },
+    deleted         : { type: Number, default: 0 }, 
+    updated         : { type: Number, default: 0 },
     hasLink         : Number,
     hasAttachment   : Number,
     username        : String,
     email           : String,
     userId          : Number,
-    createdAt 	    : { type: Number, default: new Date().getTime() },
+    createdAt       : { type: Number, default: new Date().getTime() },
     updatedAt       : { type: Number, default: new Date().getTime() },
-    room 	    	: String 
+    room            : String 
 
 });
 
@@ -84,7 +85,7 @@ var Room = new mongoose.Schema({
 
 //Models
 var PostModel   = mongoose.model( 'Post', Post );
-var RoomModel	= mongoose.model( 'Room', Room );
+var RoomModel   = mongoose.model( 'Room', Room );
 
 
 // gets rooms list
@@ -96,97 +97,97 @@ io.sockets.on('connection', function (socket) {
 
             socket.join(data.room);
 
-	    RoomModel.findOneAndUpdate({name: data.room},{$push: { users: data.user}},{upsert: true}, function (err,room) {
-		if(!err) {
-			console.log(room);
-			if(room) {
-				PostModel.find({room: data.room}).sort('-_id').limit(10).exec( function (err,posts) {
-					if(!err) {
-						socket.emit(data.room,{room: room, posts: posts,type:'init'});
-					}
-					else {
-						console.log(err);
-					}
-				});
-			}
-		}
-		else {
-			console.log(err);
-		}
+        RoomModel.findOneAndUpdate({name: data.room},{$push: { users: data.user}},{upsert: true}, function (err,room) {
+        if(!err) {
+            console.log(room);
+            if(room) {
+                PostModel.find({room: data.room}).sort('-_id').limit(10).exec( function (err,posts) {
+                    if(!err) {
+                        socket.emit(data.room,{room: room, posts: posts,type:'init'});
+                    }
+                    else {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+        else {
+            console.log(err);
+        }
 
-	    });
-	    
+        });
+        
             io.sockets.in(data.room).emit(data.room,{text:'User Joined Room!', type: 'info', time: new Date().getTime()});
 
             socket.on(data.room, function(message) {
 
-		if(message.type == 'content') {
+        if(message.type == 'content') {
 
-			var post = new PostModel({
-				text: message.text,
-				type: 'content',
-				username: message.username,
-				room: message.room
-			});
-			post.save( function (err,post) {
-	
-				if(!err) {
+            var post = new PostModel({
+                text: message.text,
+                type: 'content',
+                username: message.username,
+                room: message.room
+            });
+            post.save( function (err,post) {
+    
+                if(!err) {
 
-					console.log(post);
-					io.sockets.in(data.room).emit(data.room,post);	
+                    console.log(post);
+                    io.sockets.in(data.room).emit(data.room,post);  
 
-					RoomModel.findOneAndUpdate( 
-					    { 
-						name	: data.room 
-					    }, 
-					    { 
-						updatedAt	: new Date().getTime(), 
-						$push		: {
-							postIds: post._id 
-						} 
-					    },
-					    { 	
-						safe	: true, 
-						upsert	: true
-					    }, 
-						function (err,room) { 
-						
-						if(!err) {
-							console.log('updated room!');
-						}
-						else {
-							console.log(err);
-						}
-					});
+                    RoomModel.findOneAndUpdate( 
+                        { 
+                        name    : data.room 
+                        }, 
+                        { 
+                        updatedAt   : new Date().getTime(), 
+                        $push       : {
+                            postIds: post._id 
+                        } 
+                        },
+                        {   
+                        safe    : true, 
+                        upsert  : true
+                        }, 
+                        function (err,room) { 
+                        
+                        if(!err) {
+                            console.log('updated room!');
+                        }
+                        else {
+                            console.log(err);
+                        }
+                    });
 
-				}
-				else {
-					console.log(err);
-				}
+                }
+                else {
+                    console.log(err);
+                }
 
-			});
-		        			
-		}
-		else if(message.type == 'info') {
-					
-			io.sockets.in(data.room).emit(data.room,message);
+            });
+                            
+        }
+        else if(message.type == 'info') {
+                    
+            io.sockets.in(data.room).emit(data.room,message);
 
-		}
-		else if (message.type == 'action') {
-			if(message.action == 'delete') {
-				PostModel.findOneAndUpdate({_id: message._id},{text: '', deleted: 1 }, function (err) {
-					if(!err) {
-						console.log('updated');
+        }
+        else if (message.type == 'action') {
+            if(message.action == 'delete') {
+                PostModel.findOneAndUpdate({_id: message._id},{text: '', deleted: 1 }, function (err) {
+                    if(!err) {
+                        console.log('updated');
 
-					}
-					else {
-						console.log(err);
-					}
-				});
-			}	
-			io.sockets.in(data.room).emit(data.room,message);
+                    }
+                    else {
+                        console.log(err);
+                    }
+                });
+            }   
+            io.sockets.in(data.room).emit(data.room,message);
 
-		}
+        }
             });
 
     });

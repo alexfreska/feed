@@ -22,6 +22,9 @@ define(function(require) {
         open: function () {
             var s = this;
             console.log('click');
+            $('.selectorItem').removeClass('selected');
+            s.$el.addClass('selected');
+
             s.room.$('.secondary .streamContainer').removeClass('show');
 
             s.room.$('.secondary .streamContainer.'+s.class).addClass('show');

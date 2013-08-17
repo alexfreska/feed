@@ -58,7 +58,7 @@ define(function(require) {
         var val = s.$('#username').val();
         if(val != '') {
             s.user.name = val;
-            s.$('#username').val('');
+            s.$('#userInfo').text(val);
         }
     }
 
