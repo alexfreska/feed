@@ -1,5 +1,5 @@
-<div class="user"><%= data.username %></div>
-<div class="content">
-	<%= data.text %>
-</div>
-<div class="delete">Delete</div>
+<div class="userImg"><img src=<%= "http://www.gravatar.com/avatar/"+ data.hash + "?s=40" %> id="userImg" alt="image" title=<%= data.username %>></div>
+<span class="content">
+    <%= data.text %>
+</span>
+<div class="delete small">delete</div>

@@ -58,7 +58,7 @@ mongoose.connect(uristring);
 //Schemas
 
 var Post = new mongoose.Schema({
-    type        : String, 
+    type            : String, 
     text            : String,
     deleted         : { type: Number, default: 0 }, 
     updated         : { type: Number, default: 0 },
@@ -124,10 +124,11 @@ io.sockets.on('connection', function (socket) {
         if(message.type == 'content') {
 
             var post = new PostModel({
-                text: message.text,
-                type: 'content',
-                username: message.username,
-                room: message.room
+                text        : message.text,
+                type        : 'content',
+                username    : message.username,
+                room        : message.room,
+                email       : message.email
             });
             post.save( function (err,post) {
     

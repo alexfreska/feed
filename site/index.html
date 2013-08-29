@@ -1,20 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>feed.io</title>
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>feed.io</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 </head>
 <body>
+<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script data-main="js/main" src="js/lib/require.js"></script>
   <div id="container">
     <div id="roomHandler">
     <form id="signin" action="#">
         <label for="username">User: </label>
         <input type="text" id="username">
+        <label for="email">email: </label>
+        <input type="text" id="email">
         <button class="login">Login</button>
-        <div id="userInfo"></div>
+        <div id="userInfo">
+            info:
+            <div class="name">-</div>
+            <div class="email">-</div>
+        </div>
     </form>
     <form id="addRoom" action="#">  
         <input type="text" id="newRoom">

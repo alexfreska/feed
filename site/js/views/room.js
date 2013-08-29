@@ -7,6 +7,7 @@ define(function(require) {
         StreamSelector  = require('views/streamSelector'),
         RoomT           = require('text!templates/room.html'),
         PostFormT       = require('text!templates/postForm.html');
+        //hljs            = require('highlight.js');
 
     Room = Backbone.View.extend({
         tagName: 'div',
@@ -29,6 +30,7 @@ define(function(require) {
 
         //grab user info
         s.user = args.user;
+        console.log(s.user);
 
         //grab room and add class
         s.room = args.room;
@@ -81,7 +83,8 @@ define(function(require) {
                 type: 'content',
                 text: data,
                 username: s.user.name,
-                room: s.room
+                room: s.room,
+                email: s.user.email
             }
 
                 window.socket.emit(s.room,message);
@@ -115,14 +118,30 @@ define(function(require) {
             s.mainStream.post(post,options);
     
             // check for links
-            links = message.text.match(/((https?:\/\/)?([\da-z-]+[\.])+([a-z]{2,4})(\/[\w\da-z\-^\/\.]*)+\/?)/g)? 1 : 0;
+            var links = message.text.match(/((https?:\/\/)?([\da-z-]+[\.])+([a-z]{2,4})(\/[\w\da-z\-^\/\.]*)+\/?)/g)? 1 : 0;
             
             if(links) {
                 s.linkStream.post(post,options);
             }
 
             // check for code
+            var code = message.text.match(/```/g);
+            console.log(code);
+            if(code && code.length >= 2) {
+                code = 1;
+            } else {
+                code = 0;
+            }
+            
+            if(code) {
+                message.text = message.text.replace(/```/,'<pre><code>');
+                message.text = message.text.replace(/```/,'</code></pre>');
+            
+                post.set('text', message.text);
 
+                code = s.codeStream.post(post,options);
+
+            }
     
             // check for hash tags
             var tags = message.text.match(/#([\S]+)/g);

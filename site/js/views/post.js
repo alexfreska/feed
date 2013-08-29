@@ -2,7 +2,8 @@ define(function(require) {
     var $           = require('jquery'),
         _           = require('underscore'),
         Backbone    = require('backbone'),
-    PostT       = require('text!templates/post.html');
+        PostT       = require('text!templates/post.html'),
+        MD5         = require('helpers/md5');
 
     Post = Backbone.View.extend({
         tagName: 'div',
@@ -27,12 +28,19 @@ define(function(require) {
 
             s.$el.empty();
             var data = s.model.toJSON();
+            
+            data.hash = '';
+            if(data.email) {
+                data.hash = MD5.on(data.email);
+            } 
+            console.log(data);
+            
             s.$el.append(s.template({data: data}));
 
             if(data.deleted) {
 
-                s.$('.content').text('Content has been deleted.');
-                s.$el.css('background','red');
+                s.$('.content').text('Content has been deleted.').addClass('deleted');
+                s.$el.css('background','#EEB4B4');
 
             }
         },

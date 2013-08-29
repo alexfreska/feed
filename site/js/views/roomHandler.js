@@ -17,7 +17,8 @@ define(function(require) {
             s.selectors = [];
 
             s.user = {
-                name: ''
+                name: '',
+                email: ''
             }
         },
         addRoom: function (e) {
@@ -58,7 +59,12 @@ define(function(require) {
         var val = s.$('#username').val();
         if(val != '') {
             s.user.name = val;
-            s.$('#userInfo').text(val);
+            s.$('#userInfo .name').text(val);
+        }
+        val = s.$('#email').val();
+        if(val != '') {
+            s.user.email = val;
+            s.$('#userInfo .email').text(val);
         }
     }
 

@@ -4,7 +4,7 @@ requirejs.config({
         'underscore'    : 'lib/underscore-min',
         'backbone'      : 'lib/backbone-min',
         'socketio'      : '../socket.io/socket.io',
-        'text'          : 'lib/text'
+        'text'          : 'lib/text',
     },
     shim: {
         'underscore': {

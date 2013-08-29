@@ -17,10 +17,14 @@ define(function(require) {
             s.$el.addClass(args.name+'Stream');
 
             s.$el.append(s.template()); 
+            
+            s.lastUser = '';
         },
         post: function (message,options) {
             var s = this;
+            var compact = 0; 
 
+            s.lastUser == message.user ? compact = 1 : compact = 0;
             var post = new Post({model: message});
 
             s.$('.posts').append( post.el );
@@ -30,6 +34,7 @@ define(function(require) {
                     s.$('.stream').animate({ scrollTop: post.$el.position().top });
 
             }
+            return s;
         }
     
     });

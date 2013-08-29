@@ -5,6 +5,9 @@ body {
 input {
     color: #545454;
 }
+.small {
+    font-size: 10px;
+}
 #signin {
     margin: 5px;
 }
@@ -17,7 +20,7 @@ input {
   position: relative;
 }
 .streamContainer {
-  height: 500px;
+  height: 700px;
   width: 500px;
   margin: 5px;
   float: left;
@@ -27,7 +30,7 @@ input {
 }
 .secondary {
     position: relative;
-    height: 500px;
+    height: 700px;
     float: left;
 }
 .selectorItem {
@@ -61,7 +64,12 @@ input {
     border: 1px solid gray;
 }
 .content {
-  padding: 5px;
+    padding: 5px;
+}
+.delete {
+    position: relative;
+    float: right;
+    color: #f3f3f3;
 }
 .postForm {
   position: absolute;
@@ -120,16 +128,22 @@ textarea.input {
 
 }
 #username {
-    width: 40%;
 }
 #userInfo {
     font-style: italic;
     padding: 10px;
     font-weight: 500;
+    font-size: 14px;
 }
-#roomHandler {
-  float: left;
-  display: inline;
-  width: 15%;
+.userImg {
+    display: inline-block;
+}
 
+#roomHandler {
+    float: left;
+    display: inline;
+    width: 15%;
+}
+.deleted {
+    font-style: italic;
 }
