@@ -1,7 +1,7 @@
 # feed.io
 > Robust communication system.
 
-**feed.io** is a socket based chat system that supports productivity and collaboration through an automated stream system. Content is displayed in sorted streams with absolutely zero setup on the user's part.
+**feed.io** is a socket based chat system that supports productivity and collaboration through an automated feed system. Content is displayed in sorted feeds with absolutely zero setup on the user's part.
 
 ## Command Line
 
