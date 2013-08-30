@@ -12,7 +12,7 @@
     $ npm install 
     $ node server.js
     
-#### Prerequisites
+#### Dependencies
     
 The application relies on MongoDB to persist data.
 You will need to make sure you have MongoDB installed and have the process running.
