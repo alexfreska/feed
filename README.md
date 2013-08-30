@@ -20,6 +20,7 @@ You will need to make sure you have MongoDB installed and have the process runni
 [Click here for more information on installing MongoDB.](http://docs.mongodb.org/manual/installation/ "Install MongoDB")
 
 ## License
-Copyright (c) 2013 Alex Freska
+Copyright (c) 2013 [Alex Freska](https://github.com/alexfreska) and [Nikhil Srinivasan](https://github.com/nikhilsrinivasan)
+
 
 Licensed under the MIT license.
