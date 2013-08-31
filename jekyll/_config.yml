@@ -1,0 +1,7 @@
+name: feed.io
+url: alexfreska.github.io/feed.io/blog
+description: feed.io/blog
+author: nikhilsrinivasan
+copyright: alexfreska and nikhilsrinivasan
+markdown: redcarpet
+pygments: true

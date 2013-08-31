@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  version="2.0"
+  xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>feed.io</title>
+    <link>alexfreska.github.io/feed.io/blog</link>
+    <description>feed.io/blog</description>
+    <copyright>alexfreska and nikhilsrinivasan</copyright>
+    <pubDate>Sun, 01 Sep 2013 00:00:00 -0400</pubDate>
+    <item>
+      <title>Project Proposal</title>
+      <link>alexfreska.github.io/feed.io/blog/update/2013/09/01/project-proposal.html</link>
+      <description>
+
+</description>
+      <pubDate>Sun, 01 Sep 2013 00:00:00 -0400</pubDate>
+      <dc:date>2013-09-01T00:00:00-04:00</dc:date>
+    </item>
+    <dc:date>2013-09-01T00:00:00-04:00</dc:date>
+  </channel>
+</rss>
