@@ -3,6 +3,7 @@ define(function(require) {
         _           = require('underscore'),
         Backbone    = require('backbone'),
         PostT       = require('text!templates/post.html'),
+        PostCT      = require('text!templates/postCompact.html'),
         MD5         = require('helpers/md5');
 
     Post = Backbone.View.extend({
@@ -14,10 +15,15 @@ define(function(require) {
         events: {
             'click .delete' : 'deleteContent'
         },
-        initialize: function () {
+        initialize: function (args) {
             var s = this;
-
+            
+            s.compact = args.compact;
+            console.log(s.compact);
             s.room = s.model.get('room');
+
+            s.postT = _.template(PostT);
+            s.postCT = _.template(PostCT);
 
             s.render();
 
@@ -26,21 +32,36 @@ define(function(require) {
         render: function () {
             var s = this;
 
+            // make sure element is empty incase 
+            // it is being re-rendered
             s.$el.empty();
+
+            // create JSON object from model
             var data = s.model.toJSON();
             
+            // if an email exists create an MD5 hash
+            // for gravatar to use
             data.hash = '';
             if(data.email) {
                 data.hash = MD5.on(data.email);
             } 
-            console.log(data);
             
-            s.$el.append(s.template({data: data}));
+
+            if(s.compact) {
+                console.log('yo');
+                s.$el.append(s.postCT({data: data}));
+            } else {
+                s.$el.append(s.postT({data: data}));
+            }
+
+            // reselect timeago selector
+            // there may be a better way to add 1 element
+            $('time.timeago').timeago();
 
             if(data.deleted) {
 
-                s.$('.content').text('Content has been deleted.').addClass('deleted');
-                s.$el.css('background','#EEB4B4');
+                s.$('.text').text('Content has been deleted.').addClass('deleted');
+                s.$('.text').css('background','#ffe5e5');
 
             }
         },

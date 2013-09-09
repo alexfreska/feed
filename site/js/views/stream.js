@@ -18,14 +18,20 @@ define(function(require) {
 
             s.$el.append(s.template()); 
             
-            s.lastUser = '';
+            s.last = {
+                user: '',
+                time: ''
+            }
         },
         post: function (message,options) {
             var s = this;
             var compact = 0; 
+            var messageRaw = message.toJSON();
+            s.last.user == messageRaw.username ? compact = 1 : compact = 0;
+            s.last.user = messageRaw.username;
+            s.last.time = new Date();
 
-            s.lastUser == message.user ? compact = 1 : compact = 0;
-            var post = new Post({model: message});
+            var post = new Post({model: message, compact: compact});
 
             s.$('.posts').append( post.el );
 
@@ -34,7 +40,7 @@ define(function(require) {
                     s.$('.stream').animate({ scrollTop: post.$el.position().top });
 
             }
-            return s;
+            return post;
         }
     
     });

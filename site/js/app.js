@@ -5,7 +5,8 @@ define(function(require) {
         Router      = require('router');
 
     var initialize = function() {
-        
+
+
         Router.initialize();
 
     }

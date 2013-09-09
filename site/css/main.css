@@ -28,6 +28,10 @@ input {
   position: relative;
   display: none;
 }
+.checkbox {
+    position: relative;
+    float: right;   
+}
 .secondary {
     position: relative;
     height: 700px;
@@ -64,15 +68,18 @@ input {
     border: 1px solid gray;
 }
 .content {
+    position: relative;
     padding: 5px;
 }
 .delete {
-    position: relative;
-    float: right;
+    position: absolute;
+    right: 5px;
+    top: 5px;
     color: #f3f3f3;
 }
 .postForm {
   position: absolute;
+  width: 470px;
   bottom: 0px;
 }
 #newRoom {
@@ -88,11 +95,17 @@ input {
   max-height: 100%;  
 
 }
+.timeago {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
 .post {
   position: relative;
-  border-bottom: 1px solid #f3f3f3;
+}
+.blob {
   padding: 5px;
-  min-height: 50px;
+  border-top: 1px solid #f3f3f3;
 }
 .listItem {
   display: block;
@@ -106,18 +119,23 @@ input {
   width: 90%;
 }
 textarea.input {
-    width: 480px;
+    width: 470px;
     margin: 5px;
     position: absolute;
     bottom: 0px;
     height: 35px;
 }
 .submit {
-  background: blue;
-  height: 30px;
-  width: 60px;
-  margin: 5px;
-  float: left;
+    position: relative;
+    height: 18px;
+    width: 60px;
+    margin: 5px;
+    bottom: 3px;
+    float: right;
+    background: #f3f3f3;
+    border-radius: 2px; 
+    border: 1px solid gray;
+
 }
 .selected {
   background: #f3f3f3;
@@ -146,4 +164,5 @@ textarea.input {
 }
 .deleted {
     font-style: italic;
+    color: gray;
 }

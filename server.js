@@ -67,8 +67,8 @@ var Post = new mongoose.Schema({
     username        : String,
     email           : String,
     userId          : Number,
-    createdAt       : { type: Number, default: new Date().getTime() },
-    updatedAt       : { type: Number, default: new Date().getTime() },
+    createdAt       : { type: Date, default: Date.now },
+    updatedAt       : { type: Date, default: Date.now },
     room            : String 
 
 });
@@ -78,8 +78,8 @@ var Room = new mongoose.Schema({
 
     name      : String,
     users     : [{userId: Number}],
-    createdAt : { type: Number, default: new Date().getTime() },
-    updatedAt : { type: Number, default: new Date().getTime() }
+    createdAt : { type: Date, default: Date.now },
+    updatedAt : { type: Date, default: Date.now }
 
 });
 
@@ -117,7 +117,7 @@ io.sockets.on('connection', function (socket) {
 
         });
         
-            io.sockets.in(data.room).emit(data.room,{text:'User Joined Room!', type: 'info', time: new Date().getTime()});
+            io.sockets.in(data.room).emit(data.room,{text:'User Joined Room!', type: 'info', time: new Date()});
 
             socket.on(data.room, function(message) {
 
@@ -130,11 +130,12 @@ io.sockets.on('connection', function (socket) {
                 room        : message.room,
                 email       : message.email
             });
+            console.log(post.createdAt);
             post.save( function (err,post) {
     
                 if(!err) {
 
-                    console.log(post);
+                    //console.log(post);
                     io.sockets.in(data.room).emit(data.room,post);  
 
                     RoomModel.findOneAndUpdate( 
@@ -142,7 +143,7 @@ io.sockets.on('connection', function (socket) {
                         name    : data.room 
                         }, 
                         { 
-                        updatedAt   : new Date().getTime(), 
+                        updatedAt   : new Date(), 
                         $push       : {
                             postIds: post._id 
                         } 

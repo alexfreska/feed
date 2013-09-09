@@ -68,7 +68,7 @@ define(function(require) {
         });
 
         s.$('.input').keypress(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13 && s.$('#checkbox').prop('checked') == 1) {
                 s.submit();
             }
         });
@@ -79,16 +79,17 @@ define(function(require) {
 
             var data = s.$('.input').val();
             if(data != '') {
-            var message = {
-                type: 'content',
-                text: data,
-                username: s.user.name,
-                room: s.room,
-                email: s.user.email
-            }
+
+                var message = {
+                    type: 'content',
+                    text: data,
+                    username: s.user.name,
+                    room: s.room,
+                    email: s.user.email
+                }
 
                 window.socket.emit(s.room,message);
-            s.$('.input').val('');
+                s.$('.input').val('');
             }
         },
         process: function (message,options) {
@@ -140,6 +141,11 @@ define(function(require) {
                 post.set('text', message.text);
 
                 code = s.codeStream.post(post,options);
+                
+                code.$('.content pre code').each(function() {
+                        hljs.highlightBlock(this, '    ');
+                        //hljs.highlightAuto(this.textContent);
+                });
 
             }
     
