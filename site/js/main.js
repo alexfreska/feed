@@ -25,15 +25,15 @@ requirejs.config({
                 return Backbone.noConflict();
 
             }
+        },
+        'sta': {
+            deps        : ['jquery']
         }
     }
 });
 
 define(function(require) {
     var App = require('app'),
-        $   = require('jquery'),
-        // this might be causing error when script does not complete before
-        // first post goes up
         sta = require('sta');
 
     App.initialize();

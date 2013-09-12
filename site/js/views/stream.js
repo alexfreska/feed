@@ -22,12 +22,25 @@ define(function(require) {
                 user: '',
                 time: ''
             }
+
+            s.used = 1;
+
+            window.onfocus = function() {
+                s.used = 1;
+            };
+            window.onblur = function() {
+                s.used = 0;
+            };
         },
         post: function (message,options) {
             var s = this;
             var compact = 0; 
             var messageRaw = message.toJSON();
-            s.last.user == messageRaw.username ? compact = 1 : compact = 0;
+            if(s.last.user == messageRaw.username) {
+                compact = 1 
+            } else {
+                compact = 0;
+            }
             s.last.user = messageRaw.username;
             s.last.time = new Date();
 
@@ -41,6 +54,10 @@ define(function(require) {
 
             }
             return post;
+        },
+        addUserToReciept: function (message) {
+            var s = this;
+
         }
     
     });
