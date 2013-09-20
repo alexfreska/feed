@@ -2,24 +2,34 @@ define(function(require) {
     var $           = require('jquery'),
         _           = require('underscore'),
         Backbone    = require('backbone'),
-        RoomSelec   = require('views/roomSelector');
+        RoomSelec   = require('views/roomSelector'),
+        AppT        = require('text!templates/app.html'),
+        MD5         = require('helpers/md5');
 
     RoomHandler = Backbone.View.extend({
-        el: '#roomHandler',
+        tagName: 'div',
+        id: 'roomHandler',
+
+        template: _.template(AppT),
 
         events: {
             'click .submit' : 'addRoom',
             'click .login'  : 'login'
         },
-        initialize: function () {
+        initialize: function (args) {
             var s = this;
+
             s.rooms = [];
             s.selectors = [];
 
             s.user = {
-                name: '',
-                email: ''
+                name: args.user.name,
+                email: args.user.email,
+                hash: MD5.on(args.user.email)
             }
+            
+            s.$el.append(s.template({user: s.user}));
+
         },
         addRoom: function (e) {
             var s = this;
@@ -27,7 +37,7 @@ define(function(require) {
             e.preventDefault();
 
             var newRoom = s.$('#newRoom').val();
-            console.log(newRoom);
+
             if(!s.inRoom(newRoom) && s.user.name != '') {
             
             s.$('#newRoom').val('');    
@@ -44,7 +54,8 @@ define(function(require) {
 
             //join room
                 window.socket.emit('joinRoom',{room: newRoom, user: s.user.name});
-
+                
+                console.log('Joined: '+newRoom);
          }
             
         },

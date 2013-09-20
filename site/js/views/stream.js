@@ -20,6 +20,7 @@ define(function(require) {
             
             s.last = {
                 user: '',
+                email: '',
                 time: ''
             }
 
@@ -36,12 +37,14 @@ define(function(require) {
             var s = this;
             var compact = 0; 
             var messageRaw = message.toJSON();
-            if(s.last.user == messageRaw.username) {
+            if(s.last.email == messageRaw.email) {
                 compact = 1 
             } else {
                 compact = 0;
             }
+
             s.last.user = messageRaw.username;
+            s.last.email = messageRaw.email;
             s.last.time = new Date();
 
             var post = new Post({model: message, compact: compact});

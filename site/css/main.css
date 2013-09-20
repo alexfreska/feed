@@ -10,6 +10,13 @@ input {
 }
 #signin {
     margin: 5px;
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #f3f3f3;
+}
+#signin #username,#email {
+    padding: 5px;
+    margin: 5px;
 }
 .room {
   position: relative;
@@ -62,10 +69,25 @@ input {
 #roomList {
   width: 100%;
 }
+#login-area {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 200px;
+    height: 200px;
+}
 .login {
+    position: relative;
+    display: block;
+    left: 115px;
+    width: 80px;
+    height: 30px;
     background: #f3f3f3;
     border-radius: 2px; 
     border: 1px solid gray;
+    margin-top: 5px;
 }
 .content {
     position: relative;
@@ -153,10 +175,24 @@ textarea.input {
 #username {
 }
 #userInfo {
+    position: relative;
+    float: left;
+    display: block;
     font-style: italic;
+    width: 100%;
     padding: 10px;
     font-weight: 500;
     font-size: 14px;
+}
+#userInfo .name,.userImg {
+    position: relative;
+    float: left;
+    display: block;
+}
+#userInfo .name {
+    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .userImg {
     display: inline-block;

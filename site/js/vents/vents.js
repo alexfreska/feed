@@ -3,7 +3,7 @@ define(function(require) {
         _           = require('underscore'),
         Backbone    = require('backbone');
 
-    Vents = _.extend({},Backbone.events);
+    Vents = _.extend({},Backbone.Events);
 
     return Vents;
 

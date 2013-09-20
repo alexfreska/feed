@@ -78,6 +78,8 @@ define(function(require) {
             var s = this;
 
             var data = s.$('.input').val();
+            data = s.sanitize(data);
+
             if(data != '') {
 
                 var message = {
@@ -127,7 +129,7 @@ define(function(require) {
 
             // check for code
             var code = message.text.match(/```/g);
-            console.log(code);
+
             if(code && code.length >= 2) {
                 code = 1;
             } else {
@@ -152,7 +154,6 @@ define(function(require) {
             // check for hash tags
             var tags = message.text.match(/#([\S]+)/g);
             
-            console.log(tags);
             _.each(tags, function (tag) {
                 tag = tag.substr(1, tag.length-1);
                 if(s.selectors[tag]) {
@@ -205,6 +206,24 @@ define(function(require) {
                 }
             }
             return stream;
+        },
+        sanitize: function (str) {
+
+            function trim(str, chars) {
+                    return ltrim(rtrim(str, chars), chars);
+            }
+             
+            function ltrim(str, chars) {
+                    chars = chars || "\\s";
+                        return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+            }
+             
+            function rtrim(str, chars) {
+                    chars = chars || "\\s";
+                        return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+            }
+
+            return trim(str);
         }
 
     });

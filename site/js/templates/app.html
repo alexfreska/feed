@@ -1,0 +1,10 @@
+<div id="userInfo">
+    <div class="userImg"><img src=<%= "http://www.gravatar.com/avatar/"+ user.hash + "?s=60" %> id="userImg" alt="image" title=<%= user.name %>></div>
+    <div class="name"><%= user.name %></div>
+</div>
+<form id="addRoom" action="#">  
+    <label for="newRoom">Join a room:</label>
+    <input type="text" id="newRoom">
+    <button class="submit" style="visibility:hidden;position:absolute;">Add</button>
+</form>
+<div id="roomList"></div>

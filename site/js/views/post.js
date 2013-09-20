@@ -19,7 +19,7 @@ define(function(require) {
             var s = this;
             
             s.compact = args.compact;
-            console.log(s.compact);
+
             s.room = s.model.get('room');
 
             s.postT = _.template(PostT);
@@ -48,7 +48,6 @@ define(function(require) {
             
 
             if(s.compact) {
-                console.log('yo');
                 s.$el.append(s.postCT({data: data}));
             } else {
                 s.$el.append(s.postT({data: data}));
