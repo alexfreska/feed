@@ -1,7 +1,5 @@
 ![feed.io](http://f.cl.ly/items/2I2x1A28111G1k220U0U/feed.io-ghbanner.png)
 
-## feed.io
-
 ### What
 **feed.io** is a real-time chat system focused on ease of use, productivity, collaboration, and security.
 
