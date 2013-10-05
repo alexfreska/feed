@@ -28,15 +28,32 @@ define(function(require, exports, module) {
         index: function () {
             var s = this;
 
-            var login = function () {
+            FOCUS = 0;
 
+            window.onfocus = function () {
+                Vents.trigger('focused');
+            }
+            window.onblur = function () {
+                Vents.trigger('blurred');
+            }
+
+            var login = function () {
+                
+                //AUTOMATE
+                //var user = {
+                //    name: 'tom',
+                //    email: 'freska@gmail.com'
+                //}
                 var user = s.loginView.getUser();
+
                 s.loginView.close();
 
                 $('#container').empty(); 
 
+                console.log('hello1');
                 var roomHandler = new RoomHandler({user: user});
                 $('#container').append( roomHandler.el );
+                console.log('h3llo');
 
             }
 
@@ -45,7 +62,8 @@ define(function(require, exports, module) {
 
             Vents.on('login',login);
 
-                        
+            //AUTOMATE
+            //Vents.trigger('login');                        
 
         }
         

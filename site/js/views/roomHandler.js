@@ -14,7 +14,6 @@ define(function(require) {
 
         events: {
             'click .submit' : 'addRoom',
-            'click .login'  : 'login'
         },
         initialize: function (args) {
             var s = this;
@@ -30,55 +29,50 @@ define(function(require) {
             
             s.$el.append(s.template({user: s.user}));
 
+            //AUTOMATE - set timeout
+            //setTimeout( function() {
+            //s.addRoom()},
+            //10);
         },
         addRoom: function (e) {
             var s = this;
 
+            //AUTOMATE
+            //var newRoom = 'hello'; 
             e.preventDefault();
-
             var newRoom = s.$('#newRoom').val();
 
             if(!s.inRoom(newRoom) && s.user.name != '') {
             
-            s.$('#newRoom').val('');    
+                s.$('#newRoom').val('');    
 
-            //add to list           
-            var selector = new RoomSelec({room: newRoom});
-            s.$('#roomList').append( selector.el );
-            s.selectors[newRoom] = selector;
+                //add to list           
+                var selector = new RoomSelec({room: newRoom});
+                s.$('#roomList').append( selector.el );
+                s.selectors[newRoom] = selector;
+                
+                
+                //add room to list
+                var room = new Room({room: newRoom, user: s.user});
+                $('#container').append( room.el );
+                    s.rooms[newRoom] = room;
 
-            //add room to list
-            var room = new Room({room: newRoom, user: s.user});
-            $('#container').append( room.el );
-                s.rooms[newRoom] = room;
-
-            //join room
+                //join room
                 window.socket.emit('joinRoom',{room: newRoom, user: s.user.name});
                 
                 console.log('Joined: '+newRoom);
-         }
+                
+                //open room
+                selector.open();
+
+            }
             
         },
         inRoom: function (room) {
         var s = this;
             return s.rooms[room];
     
-    },
-    login: function () {
-        var s = this;       
-
-        var val = s.$('#username').val();
-        if(val != '') {
-            s.user.name = val;
-            s.$('#userInfo .name').text(val);
         }
-        val = s.$('#email').val();
-        if(val != '') {
-            s.user.email = val;
-            s.$('#userInfo .email').text(val);
-        }
-    }
-
     });
 
     return RoomHandler;

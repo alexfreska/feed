@@ -6,7 +6,8 @@ define(function(require) {
         Stream          = require('views/stream'),
         StreamSelector  = require('views/streamSelector'),
         RoomT           = require('text!templates/room.html'),
-        PostFormT       = require('text!templates/postForm.html');
+        PostFormT       = require('text!templates/postForm.html'),
+        Vents           = require('vents/vents');
         //hljs            = require('highlight.js');
 
     Room = Backbone.View.extend({
@@ -19,69 +20,86 @@ define(function(require) {
         initialize: function (args) {
             var s = this;
     
-        //using simple array as the collection for now
-        s.posts = [];   
-        
-        // hash for tracking stream views
-        s.streams = [];
+            //using simple array as the collection for now
+            s.posts = [];   
+            
+            // hash for tracking stream views
+            s.streams = [];
 
-        // hash for tracking selector views
-        s.selectors = [];
+            // hash for tracking selector views
+            s.selectors = [];
 
-        //grab user info
-        s.user = args.user;
-        console.log(s.user);
+            //grab user info
+            s.user = args.user;
+            console.log(s.user);
 
-        //grab room and add class
-        s.room = args.room;
-        s.$el.addClass(s.room+'Selec');
-        s.$el.attr('id',s.room);
+            //grab room and add class
+            s.room = args.room;
+            s.$el.addClass(s.room+'Selec');
+            s.$el.attr('id',s.room);
 
-        s.$el.append(this.template());
-        
-        //create initial streams
-        s.mainStream = s.addStream('main',1);
-        s.linkStream = s.addStream('links'); 
-        s.codeStream = s.addStream('code'); 
+            s.$el.append(this.template());
+            
+            //create initial streams
+            s.mainStream = s.addStream('main',1);
+            s.linkStream = s.addStream('links'); 
+            s.codeStream = s.addStream('code'); 
 
-        //add main stream and add a post form
-        //s.$('.streams').prepend( s.mainStream.el );
-        s.mainStream.$el.append(_.template(PostFormT)());
-        
-        //add event listener
-        window.socket.on(s.room, function (data) {
-            console.log('recieved data: ');
-            console.log(data);
-            if(data.type == 'init') {
-                _.each(data.posts.reverse(), function(message,index) {
-                    if(index == data.posts.length-1) {
-                        s.process(message,{noScroll: 0});
-                    }
-                    else {
-                        s.process(message,{noScroll: 1});
-                    }
-                });
-            }
-            else {
-                s.process(data);
-            }
-        });
+            //add main stream and add a post form
+            //s.$('.streams').prepend( s.mainStream.el );
+            s.mainStream.$el.append(_.template(PostFormT)());
+            
+            //add event listener
+            window.socket.on(s.room, function (data) {
+                console.log('recieved data: ');
+                console.log(data);
+                if(data.type == 'init') {
+                    _.each(data.posts.reverse(), function(message,index) {
+                        if(index == data.posts.length-1) {
+                            s.process(message,{noScroll: 0});
+                        }
+                        else {
+                            s.process(message,{noScroll: 1});
+                        }
+                    });
+                }
+                else {
+                    s.process(data);
+                }
+            });
 
-        s.$('.input').keypress(function (e) {
-            if (e.keyCode == 13 && s.$('#checkbox').prop('checked') == 1) {
-                s.submit();
-            }
-        });
+            s.$('.input').keypress(function (e) {
+                if (e.keyCode == 13 && s.$('#checkbox').prop('checked') == 1) {
+                    s.submit();
+                }
+            });
 
+            // listen for focused event to check if new receipt needs to go out
+            Vents.on('focused',_.bind(s.focus,s));
+            Vents.on('blurred',_.bind(s.unFocus,s));
+        },
+        focus: function () {
+            var s = this;
+            s.focused = 1;
+            s.addUserToReceipt();
+        },
+        unFocus: function () {
+            var s = this;
+            s.focused = 0;
         },
         submit: function () {
             var s = this;
 
+            //collect data
             var data = s.$('.input').val();
+            
+            // strip whitespace with sanitize function
             data = s.sanitize(data);
 
+            // if some content exists, send it
             if(data != '') {
 
+                // build message block
                 var message = {
                     type: 'content',
                     text: data,
@@ -90,8 +108,21 @@ define(function(require) {
                     email: s.user.email
                 }
 
+                // set out message to roomates
                 window.socket.emit(s.room,message);
+
+                // clear input value
                 s.$('.input').val('');
+
+                // clear receipt
+                s.clearReceipt();
+
+                // submit on enter adds a new line due to debouncing issues
+                // this small delay lets the space get deleted 1ms later.
+                setTimeout(function() {
+                    s.$('.input').val('');
+                },1);
+
             }
         },
         process: function (message,options) {
@@ -163,11 +194,17 @@ define(function(require) {
                     s.streams[tag].post(post);
                 }
             });
+
+            // update latest message id
+            s.lastMessage = message;
+            s.clearReceipt();
+            s.addUserToReceipt();
         },
         action: function (message) {
             var s = this;
     
-            var post = s.posts[message._id]; //CHECK IN STREAM
+            // the text of an action message is the relevant content message's _id
+            var post = s.posts[message.text]; //CHECK IN STREAM
             console.log(message);
             if(post) {
                 if(message.action == 'delete') {
@@ -176,6 +213,8 @@ define(function(require) {
                     post.set({'deleted': 1, 'text': ''});
                     console.log(post);
 
+                } else if (message.action == 'receipt') {
+                    s.addToReceipt(message);
                 }
                 
             }
@@ -224,6 +263,73 @@ define(function(require) {
             }
 
             return trim(str);
+        },
+        addUserToReceipt: function () {
+            var s = this;
+
+            //console.log('el:');
+            //console.log(s.$el.css('display'));
+            
+            if( (s.$el.css('display') != 'none') && 
+                s.focused &&
+                (s.lastMessageSeen != s.lastMessage._id) && 
+                (s.user.name != s.lastMessage.username) ) {
+               
+                // build message block
+                var message = {
+                    type: 'action',
+                    action: 'receipt',
+                    text: s.lastMessage._id,
+                    username: s.user.name,
+                    room: s.room,
+                    email: s.user.email
+                }
+
+                // set out message to roomates
+                window.socket.emit(s.room,message);
+                
+                s.lastMessageSeen = s.lastMessage._id;
+            }
+
+        },
+        addToReceipt: function (message) {
+            var s = this;
+          
+            // if the receipt is for the current last message and
+            // the message is not from self
+            if((message.text == s.lastMessage._id) && (message.email != s.user.email)) {
+                console.log('rec user:');
+                console.log(s.receiptUsers[message.email]);
+                // if user has not been recorded
+                if(s.receiptUsers[message.email] != message.text) {
+
+                    // record user
+                    s.receiptUsers[message.email] = message.text;
+
+                    //update receipt
+                    if(s.emptyReceipt) {
+                        s.mainStream.$('.receipt').text('Seen by ' + message.username); 
+                        s.emptyReceipt = 0;
+                    } else {
+                        s.mainStream.$('.receipt').text(
+                            s.mainStream.$('.receipt').text() + ', ' + message.username
+                        );
+                    }
+
+                }
+            } else if(message.text != s.lastMessage._id) {
+                console.log('reset receipt');
+                s.receiptUsers = [];
+                s.mainStream.$('.receipt').text('Seen by');
+            }
+
+        },
+        clearReceipt: function () {
+            var s = this;
+            console.log('clear Receipt');
+            s.receiptUsers = [];
+            s.mainStream.$('.receipt').text('');
+            s.emptyReceipt = 1;
         }
 
     });

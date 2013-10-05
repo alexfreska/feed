@@ -69,7 +69,7 @@ define(function(require) {
             console.log('Delete post: ' + s.model.get('_id'));
 
             var message = {
-                _id: s.model.get('_id'),
+                text: s.model.get('_id'),
                 type: 'action',
                 action: 'delete',
                 time: new Date().getTime()

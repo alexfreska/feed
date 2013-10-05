@@ -18,16 +18,22 @@ define(function(require) {
             console.log('in selector');
         },
         open: function () {
-            var s = this;
+            var s = this, top = 0;
             $('.listItem').removeClass('selected');
             s.$el.addClass('selected');
 
             $('.room').removeClass('show');
             $(s.class).addClass('show');
-            
-            $(s.class + ' .stream').scrollTop($(s.class + ' .post').last().position().top);
-
+          
+            //scroll down
+            if($(s.class + ' .post').last().position()) {
+                top = $(s.class + ' .post').last().position().top
+                if(top) {
+                    $(s.class + ' .stream').scrollTop(top);
+                }
             }
+
+        }
     });
     return RoomSelector;
 

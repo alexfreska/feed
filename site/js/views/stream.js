@@ -24,14 +24,7 @@ define(function(require) {
                 time: ''
             }
 
-            s.used = 1;
 
-            window.onfocus = function() {
-                s.used = 1;
-            };
-            window.onblur = function() {
-                s.used = 0;
-            };
         },
         post: function (message,options) {
             var s = this;
@@ -56,11 +49,8 @@ define(function(require) {
                     s.$('.stream').animate({ scrollTop: post.$el.position().top });
 
             }
-            return post;
-        },
-        addUserToReciept: function (message) {
-            var s = this;
 
+            return post;
         }
     
     });
