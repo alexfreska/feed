@@ -30,17 +30,17 @@ define(function(require) {
             s.$el.append(s.template({user: s.user}));
 
             //AUTOMATE - set timeout
-            //setTimeout( function() {
-            //s.addRoom()},
-            //10);
+            setTimeout( function() {
+            s.addRoom()},
+            10);
         },
         addRoom: function (e) {
             var s = this;
 
             //AUTOMATE
-            //var newRoom = 'hello'; 
-            e.preventDefault();
-            var newRoom = s.$('#newRoom').val();
+            var newRoom = 'hello'; 
+            //e.preventDefault();
+            //var newRoom = s.$('#newRoom').val();
 
             if(!s.inRoom(newRoom) && s.user.name != '') {
             

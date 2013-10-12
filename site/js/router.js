@@ -40,11 +40,11 @@ define(function(require, exports, module) {
             var login = function () {
                 
                 //AUTOMATE
-                //var user = {
-                //    name: 'tom',
-                //    email: 'freska@gmail.com'
-                //}
-                var user = s.loginView.getUser();
+                var user = {
+                    name: 'tom',
+                    email: 'freska@gmail.com'
+                }
+                //var user = s.loginView.getUser();
 
                 s.loginView.close();
 
@@ -63,7 +63,7 @@ define(function(require, exports, module) {
             Vents.on('login',login);
 
             //AUTOMATE
-            //Vents.trigger('login');                        
+            Vents.trigger('login');                        
 
         }
         
