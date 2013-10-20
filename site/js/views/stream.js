@@ -30,6 +30,9 @@ define(function(require) {
             var s = this;
             var compact = 0; 
             var messageRaw = message.toJSON();
+
+            // check if the message email is the same as last
+            // to see if a compact post can be used
             if(s.last.email == messageRaw.email) {
                 compact = 1 
             } else {

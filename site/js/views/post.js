@@ -51,6 +51,7 @@ define(function(require) {
                 s.$el.append(s.postCT({data: data}));
             } else {
                 s.$el.append(s.postT({data: data}));
+                s.$el.addClass('clear');
             }
 
             // reselect timeago selector

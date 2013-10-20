@@ -27,16 +27,27 @@ define(function(require) {
         login: function () {
             var s = this;       
 
+            // grab username 
             var val = s.$('#username').val();
+
+            // if username field is not blank
             if(val != '') {
+                // set the user variable with name
                 s.user.name = val;
+                // update the user information view
                 s.$('#userInfo .name').text(val);
 
+                // grab user email
                 val = s.$('#email').val();
                 if(val != '') {
+
+                    // if the email field is not blank
                     s.user.email = val;
+
+                    // update the user information view
                     s.$('#userInfo .email').text(val);
 
+                    // trigger login event
                     Vents.trigger('login');
                 }
 

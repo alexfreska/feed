@@ -8,7 +8,6 @@ define(function(require) {
         RoomT           = require('text!templates/room.html'),
         PostFormT       = require('text!templates/postForm.html'),
         Vents           = require('vents/vents');
-        //hljs            = require('highlight.js');
 
     Room = Backbone.View.extend({
         tagName: 'div',
@@ -28,6 +27,9 @@ define(function(require) {
 
             // hash for tracking selector views
             s.selectors = [];
+
+            // bool used to check if user has seen feed
+            s.focused = 1;
 
             //grab user info
             s.user = args.user;
@@ -81,6 +83,7 @@ define(function(require) {
         focus: function () {
             var s = this;
             s.focused = 1;
+            console.log("focus");
             s.addUserToReceipt();
         },
         unFocus: function () {
@@ -139,6 +142,7 @@ define(function(require) {
             }
     
         },
+        // Adds an incoming post to the rooms feeds
         addPost: function (message,options) {
             var s = this;
             
@@ -298,8 +302,7 @@ define(function(require) {
             // if the receipt is for the current last message and
             // the message is not from self
             if((message.text == s.lastMessage._id) && (message.email != s.user.email)) {
-                console.log('rec user:');
-                console.log(s.receiptUsers[message.email]);
+
                 // if user has not been recorded
                 if(s.receiptUsers[message.email] != message.text) {
 
@@ -307,28 +310,45 @@ define(function(require) {
                     s.receiptUsers[message.email] = message.text;
 
                     //update receipt
+
+                    // if receipt is empty add this user
                     if(s.emptyReceipt) {
+
+                        // add the user to receipt
                         s.mainStream.$('.receipt').text('Seen by ' + message.username); 
+                       
+                        // receipt is no longer empty
                         s.emptyReceipt = 0;
+                        
                     } else {
+
+                        // if the receipt is not empty append the user
                         s.mainStream.$('.receipt').text(
                             s.mainStream.$('.receipt').text() + ', ' + message.username
                         );
                     }
 
                 }
+
+                // if the incoming receipts text which contains the taget messages id 
+                // is not equal to the currently recorded last message then reset receipt
             } else if(message.text != s.lastMessage._id) {
-                console.log('reset receipt');
-                s.receiptUsers = [];
-                s.mainStream.$('.receipt').text('Seen by');
+                
+                // clear the receipt
+                s.clearReceipt();
             }
 
         },
         clearReceipt: function () {
             var s = this;
-            console.log('clear Receipt');
+
+            // reset the receiptUsers hash
             s.receiptUsers = [];
+
+            // reset the receipt text
             s.mainStream.$('.receipt').text('');
+
+            // reset the empty receipt flag
             s.emptyReceipt = 1;
         }
 

@@ -144,6 +144,16 @@ body {
 .post {
   position: relative;
 }
+.clear:before, .clear:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+    
+.clear:after {
+    clear: both;
+}
 .blob {
   padding: 5px;
   border-top: 1px solid #f3f3f3;
@@ -212,6 +222,8 @@ textarea.input {
 }
 .userImg {
     display: inline-block;
+
+    clear: both;
 }
 
 #roomHandler {
