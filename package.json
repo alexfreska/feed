@@ -1,7 +1,7 @@
 {
-    "name": "backbone-app",
+    "name": "feed.io",
     "version": "0.0.1",
-    "description": "Backbone App",
+    "description": "Communication system",
     "dependencies": {
         "socket.io": "latest",
         "mongoose": "latest",

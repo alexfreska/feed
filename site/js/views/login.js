@@ -17,13 +17,18 @@ define(function(require) {
 
         initialize: function () {
             var s = this;
+
+            // add the login view template the the el
             s.$el.append(LoginT);
             
+            // user object to record login info
             s.user = {
                 name: '',
                 email: ''
             }
+
         },
+        // login procedure fired by the login button
         login: function () {
             var s = this;       
 
@@ -32,13 +37,16 @@ define(function(require) {
 
             // if username field is not blank
             if(val != '') {
+
                 // set the user variable with name
                 s.user.name = val;
+
                 // update the user information view
                 s.$('#userInfo .name').text(val);
 
                 // grab user email
                 val = s.$('#email').val();
+
                 if(val != '') {
 
                     // if the email field is not blank
@@ -53,11 +61,13 @@ define(function(require) {
 
             }
         },
+        // returns the user object
         getUser: function () {
             var s = this;
 
             return s.user;
         },
+        // destroys the view
         close: function () {
             var s = this;
 

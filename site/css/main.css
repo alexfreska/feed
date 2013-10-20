@@ -24,7 +24,7 @@ input {
   width: 80%;
 }
 
-.streams {
+.feeds {
   position: relative;
   height: 100%;
 }
@@ -38,7 +38,7 @@ body {
     height: 100%;
 }
 
-.streamContainer {
+.feedContainer {
   height: 100%;
   width: 500px;
   margin: 5px;
@@ -61,7 +61,7 @@ body {
     padding: 1px 5px 1px 5px;
     font-style: italic;
 }
-.streamSelectors {
+.feedSelectors {
   height: 39px;
   width: 500px;
   margin-bottom: 0px;
@@ -71,7 +71,7 @@ body {
   z-index: 3;
   overflow: scroll;
 }
-.stream {
+.feed {
   position: relative;
   display: block;
   height: 90%;

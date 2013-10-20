@@ -51,7 +51,7 @@ app.configure(function() {
 var uristring = 
     process.env.MONGOLAB_URI    || 
     process.env.MONGOHQ_URL     || 
-    'mongodb://localhost/stream';
+    'mongodb://localhost/feedio';
 
 mongoose.connect(uristring);
 

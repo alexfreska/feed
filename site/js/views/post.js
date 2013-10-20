@@ -15,15 +15,18 @@ define(function(require) {
         events: {
             'click .delete' : 'deleteContent'
         },
+
         initialize: function (args) {
             var s = this;
             
+            // boolean passed in as an argument for 
+            // specifying whether to use the compact
+            // or regular template
             s.compact = args.compact;
 
+            // get the room name from the model so that it
+            // may be used to emit postView events to the room
             s.room = s.model.get('room');
-
-            s.postT = _.template(PostT);
-            s.postCT = _.template(PostCT);
 
             s.render();
 
@@ -36,7 +39,7 @@ define(function(require) {
             // it is being re-rendered
             s.$el.empty();
 
-            // create JSON object from model
+            // create JSON object from model to pass to template
             var data = s.model.toJSON();
             
             // if an email exists create an MD5 hash
@@ -47,10 +50,12 @@ define(function(require) {
             } 
             
 
+            // if compact is true compile the PostCT template
+            // otherwise the PostT template
             if(s.compact) {
-                s.$el.append(s.postCT({data: data}));
+                s.$el.append(_.template(PostCT)({data: data}));
             } else {
-                s.$el.append(s.postT({data: data}));
+                s.$el.append(_.template(PostT)({data: data}));
                 s.$el.addClass('clear');
             }
 
@@ -58,6 +63,9 @@ define(function(require) {
             // there may be a better way to add 1 element
             $('time.timeago').timeago();
 
+            // if the post had been deleted then add some content and 
+            // the deleted class
+            // (deleted posts are included for contextual reasons)
             if(data.deleted) {
 
                 s.$('.text').text('Content has been deleted.').addClass('deleted');
@@ -67,8 +75,10 @@ define(function(require) {
         },
         deleteContent: function () {
             var s = this;
-            console.log('Delete post: ' + s.model.get('_id'));
 
+            // console.log('Delete post: ' + s.model.get('_id'));
+
+            // build a delete action message
             var message = {
                 text: s.model.get('_id'),
                 type: 'action',
@@ -76,6 +86,9 @@ define(function(require) {
                 time: new Date().getTime()
             }
             
+            // emit the delete action message to the room
+            // no need to delete locally since action will 
+            // fire a delete event to all connections include self
             window.socket.emit(s.room,message);
 
         }

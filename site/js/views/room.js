@@ -3,8 +3,8 @@ define(function(require) {
         _               = require('underscore'),
         Backbone        = require('backbone'),
         Post            = require('models/post'),
-        Stream          = require('views/stream'),
-        StreamSelector  = require('views/streamSelector'),
+        Feed          = require('views/feed'),
+        FeedSelector  = require('views/feedSelector'),
         RoomT           = require('text!templates/room.html'),
         PostFormT       = require('text!templates/postForm.html'),
         Vents           = require('vents/vents');
@@ -13,17 +13,19 @@ define(function(require) {
         tagName: 'div',
         className: 'room',
         template: _.template(RoomT),
+        
         events: {
             'click .submit': 'submit'
         },
+        
         initialize: function (args) {
             var s = this;
     
-            //using simple array as the collection for now
+            // using simple array as the collection for now
             s.posts = [];   
             
-            // hash for tracking stream views
-            s.streams = [];
+            // hash for tracking feed views
+            s.feeds = [];
 
             // hash for tracking selector views
             s.selectors = [];
@@ -31,31 +33,33 @@ define(function(require) {
             // bool used to check if user has seen feed
             s.focused = 1;
 
-            //grab user info
+            // grab user info
             s.user = args.user;
-            console.log(s.user);
 
-            //grab room and add class
+            // grab room and add class
             s.room = args.room;
-            s.$el.addClass(s.room+'Selec');
+            s.$el.addClass(s.room+'View');
             s.$el.attr('id',s.room);
 
             s.$el.append(this.template());
             
-            //create initial streams
-            s.mainStream = s.addStream('main',1);
-            s.linkStream = s.addStream('links'); 
-            s.codeStream = s.addStream('code'); 
+            // create initial feeds
+            s.mainFeed = s.addFeed('main',1);
+            s.linkFeed = s.addFeed('links'); 
+            s.codeFeed = s.addFeed('code'); 
 
-            //add main stream and add a post form
-            //s.$('.streams').prepend( s.mainStream.el );
-            s.mainStream.$el.append(_.template(PostFormT)());
+            // add main feed and add a post form
+            //s.$('.feeds').prepend( s.mainFeed.el );
+            s.mainFeed.$el.append(_.template(PostFormT)());
             
             //add event listener
             window.socket.on(s.room, function (data) {
-                console.log('recieved data: ');
-                console.log(data);
+
+                // console.log('recieved data: ');
+                // console.log(data);
+                
                 if(data.type == 'init') {
+                    
                     _.each(data.posts.reverse(), function(message,index) {
                         if(index == data.posts.length-1) {
                             s.process(message,{noScroll: 0});
@@ -153,13 +157,13 @@ define(function(require) {
             s.posts[message._id] = post;
 
             //render and append post
-            s.mainStream.post(post,options);
+            s.mainFeed.post(post,options);
     
             // check for links
             var links = message.text.match(/((https?:\/\/)?([\da-z-]+[\.])+([a-z]{2,4})(\/[\w\da-z\-^\/\.]*)+\/?)/g)? 1 : 0;
             
             if(links) {
-                s.linkStream.post(post,options);
+                s.linkFeed.post(post,options);
             }
 
             // check for code
@@ -177,7 +181,7 @@ define(function(require) {
             
                 post.set('text', message.text);
 
-                code = s.codeStream.post(post,options);
+                code = s.codeFeed.post(post,options);
                 
                 code.$('.content pre code').each(function() {
                         hljs.highlightBlock(this, '    ');
@@ -192,10 +196,10 @@ define(function(require) {
             _.each(tags, function (tag) {
                 tag = tag.substr(1, tag.length-1);
                 if(s.selectors[tag]) {
-                    s.streams[tag].post(post);
+                    s.feeds[tag].post(post);
                 } else {
-                    s.addStream(tag);
-                    s.streams[tag].post(post);
+                    s.addFeed(tag);
+                    s.feeds[tag].post(post);
                 }
             });
 
@@ -223,32 +227,32 @@ define(function(require) {
                 
             }
         },
-        addStream: function (name,primary) {
+        addFeed: function (name,primary) {
             var s = this;
          
             //check that name has not been used
 
-            var stream = new Stream({name: name});
+            var feed = new Feed({name: name});
 
             if(primary) {
-                s.$('.streams').prepend( stream.el );
-                stream.$el.addClass('show');
+                s.$('.feeds').prepend( feed.el );
+                feed.$el.addClass('show');
             } else {
                 if(!s.selectors[name]) {
                     // add a new selector
-                    var selector = new StreamSelector({name: name, room: s});
-                    s.$('.streamSelectors').append( selector.el );
+                    var selector = new FeedSelector({name: name, room: s});
+                    s.$('.feedSelectors').append( selector.el );
 
-                    // add stream to secondary list
-                    s.$('.secondary').append( stream.el );
+                    // add feed to secondary list
+                    s.$('.secondary').append( feed.el );
 
-                    // save stream to stream hash
-                    s.streams[name] = stream;
+                    // save feed to feed hash
+                    s.feeds[name] = feed;
                     //save to selector hash
                     s.selectors[name] = selector;
                 }
             }
-            return stream;
+            return feed;
         },
         sanitize: function (str) {
 
@@ -315,7 +319,7 @@ define(function(require) {
                     if(s.emptyReceipt) {
 
                         // add the user to receipt
-                        s.mainStream.$('.receipt').text('Seen by ' + message.username); 
+                        s.mainFeed.$('.receipt').text('Seen by ' + message.username); 
                        
                         // receipt is no longer empty
                         s.emptyReceipt = 0;
@@ -323,8 +327,8 @@ define(function(require) {
                     } else {
 
                         // if the receipt is not empty append the user
-                        s.mainStream.$('.receipt').text(
-                            s.mainStream.$('.receipt').text() + ', ' + message.username
+                        s.mainFeed.$('.receipt').text(
+                            s.mainFeed.$('.receipt').text() + ', ' + message.username
                         );
                     }
 
@@ -346,7 +350,7 @@ define(function(require) {
             s.receiptUsers = [];
 
             // reset the receipt text
-            s.mainStream.$('.receipt').text('');
+            s.mainFeed.$('.receipt').text('');
 
             // reset the empty receipt flag
             s.emptyReceipt = 1;
