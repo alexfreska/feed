@@ -42,7 +42,6 @@ define(function(require) {
 
             // check if the message email is the same as last
             // to see if a compact post can be used
-            console.log(message.get('email'));
             if(s.last.email == message.get('email')) {
                 compact = 1 
             } else {

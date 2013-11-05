@@ -3,10 +3,11 @@ define(function(require) {
         _               = require('underscore'),
         Backbone        = require('backbone'),
         Post            = require('models/post'),
-        Feed          = require('views/feed'),
-        FeedSelector  = require('views/feedSelector'),
+        Feed            = require('views/feed'),
+        FeedSelector    = require('views/feedSelector'),
         RoomT           = require('text!templates/room.html'),
         PostFormT       = require('text!templates/postForm.html'),
+        UserT           = require('text!templates/userListUser.html'),
         Vents           = require('vents/vents');
 
     Room = Backbone.View.extend({
@@ -35,6 +36,11 @@ define(function(require) {
 
             // grab user info
             s.user = args.user;
+
+            // intialize lastMessage
+            s.lastMessage = {
+                _id: 0
+            }
 
             // grab room and add class
             s.room = args.room;
@@ -210,28 +216,56 @@ define(function(require) {
         },
         action: function (message) {
             var s = this;
-    
-            // the text of an action message is the relevant content message's _id
-            var post = s.posts[message.text]; //CHECK IN STREAM
-            console.log(message);
-            if(post) {
-                if(message.action == 'delete') {
-
-                    console.log(post);
-                    post.set({'deleted': 1, 'text': ''});
-                    console.log(post);
-
-                } else if (message.action == 'receipt') {
-                    s.addToReceipt(message);
-                }
+  
+            // a user has joined the room
+            if(message.action == 'join') {
                 
+                console.log('join');
+                
+                console.log(message.text);
+                // ERROR: sometimes its null
+                if(message.text && message.text.user) {
+                    // add user to user list    
+                    s.$('.userList').append(_.template(UserT)({data: message.text.user}));
+                }
+
+            } 
+            // a user has left the room 
+            else if(message.action == 'leave') {
+
+                // find and remove user from list
+                var selector = '.userList #'+message.text.user.name+message.text.user.hash;
+                s.$(selector).remove();
+
+            } 
+            // the action is related to a post
+            else {
+                
+                // the text of an action message is the relevant post's _id
+                // grab relevant post
+                var post = s.posts[message.text];
+
+                if(post) {
+                    if(message.action == 'delete') {
+
+                        // set deleted, this will fire model change and the post 
+                        // will re-render into a deleted content state
+                        // also clear out the text
+                        post.set({'deleted': 1, 'text': ''});
+
+                    } else if (message.action == 'receipt') {
+
+                        // addToReceipt handles receipt updates
+                        s.addToReceipt(message);
+                    }
+                    
+                }
             }
         },
+        // this function adds a new feed (for a hashtag)
         addFeed: function (name,primary) {
             var s = this;
          
-            //check that name has not been used
-
             var feed = new Feed({name: name});
 
             if(primary) {
@@ -239,6 +273,7 @@ define(function(require) {
                 feed.$el.addClass('show');
             } else {
                 if(!s.selectors[name]) {
+
                     // add a new selector
                     var selector = new FeedSelector({name: name, room: s});
                     s.$('.feedSelectors').append( selector.el );
@@ -248,6 +283,7 @@ define(function(require) {
 
                     // save feed to feed hash
                     s.feeds[name] = feed;
+
                     //save to selector hash
                     s.selectors[name] = selector;
                 }
@@ -275,11 +311,8 @@ define(function(require) {
         addUserToReceipt: function () {
             var s = this;
 
-            //console.log('el:');
-            //console.log(s.$el.css('display'));
-            
             if( (s.$el.css('display') != 'none') && 
-                s.focused &&
+                 s.focused &&
                 (s.lastMessageSeen != s.lastMessage._id) && 
                 (s.user.name != s.lastMessage.username) ) {
                

@@ -55,10 +55,10 @@ define(function(require) {
                 //add room to list
                 var room = new Room({room: newRoom, user: s.user});
                 $('#container').append( room.el );
-                    s.rooms[newRoom] = room;
+                s.rooms[newRoom] = room;
 
                 //join room
-                window.socket.emit('joinRoom',{room: newRoom, user: s.user.name});
+                window.socket.emit('joinRoom',{room: newRoom, user: s.user});
                 
                 console.log('Joined: '+newRoom);
                 

@@ -30,6 +30,7 @@ define(function(require) {
 
             s.render();
 
+            // re-render on any change to the post model
             s.listenTo(s.model,'change',s.render);
         },
         render: function () {

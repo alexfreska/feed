@@ -28,7 +28,10 @@ input {
   position: relative;
   height: 100%;
 }
-
+.userList {
+    float: right;
+    width: 50px;
+}
 body {
     height: 100%;
 }
@@ -170,11 +173,11 @@ body {
   width: 90%;
 }
 textarea.input {
-    width: 470px;
+    width: 485px;
     margin: 5px;
     position: absolute;
-    bottom: 0px;
-    height: 35px;
+    bottom: -5px;
+    height: 52px;
     border: 1px solid gray;
     border-radius: 2px;
 }
