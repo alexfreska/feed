@@ -7,8 +7,8 @@ define(function(require) {
 
     Login = Backbone.View.extend({
         tagName: 'div',
-        id: 'login-area', 
-        
+        id: 'login-area',
+
         template: _.template(LoginT),
 
         events: {
@@ -20,7 +20,7 @@ define(function(require) {
 
             // add the login view template the the el
             s.$el.append(LoginT);
-            
+
             // user object to record login info
             s.user = {
                 name: '',
@@ -29,10 +29,12 @@ define(function(require) {
 
         },
         // login procedure fired by the login button
-        login: function () {
-            var s = this;       
+        login: function (e) {
+            var s = this;
 
-            // grab username 
+            e.preventDefault();
+
+            // grab username
             var val = s.$('#username').val();
 
             // if username field is not blank
@@ -73,8 +75,8 @@ define(function(require) {
 
             s.remove();
         }
-        
-    }); 
+
+    });
 
     return Login;
 

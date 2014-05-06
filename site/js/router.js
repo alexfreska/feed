@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         Room        = require('views/room'),
         Login       = require('views/login'),
         Vents       = require('vents/vents');
-        
+
     /**
      * app#Router
      *
@@ -19,10 +19,10 @@ define(function(require, exports, module) {
     AppRouter = Backbone.Router.extend({
 
         routes: {
-            
+
             ''  : 'index',
             '/' : 'index'
-            
+
         },
 
         index: function () {
@@ -36,17 +36,17 @@ define(function(require, exports, module) {
             }
 
             var login = function () {
-                
+
                 //AUTOMATE
                 // var user = {
-                //     name: 'tom',
-                //     email: 'freska@gmail.com'
+                //     name: 'test',
+                //     email: 'test@gmail.com'
                 // }
                 var user = s.loginView.getUser();
 
                 s.loginView.close();
 
-                $('#container').empty(); 
+                $('#container').empty();
 
                 var roomHandler = new RoomHandler({user: user});
                 $('#container').append( roomHandler.el );
@@ -59,10 +59,10 @@ define(function(require, exports, module) {
             Vents.on('login',login);
 
             //AUTOMATE
-            // Vents.trigger('login');                        
+            // Vents.trigger('login');
 
         }
-        
+
     });
 
     var initialize = function() {
