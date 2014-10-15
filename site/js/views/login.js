@@ -12,7 +12,7 @@ define(function(require) {
         template: _.template(LoginT),
 
         events: {
-            'click .login': 'login'
+            'click #login-button': 'login'
         },
 
         initialize: function () {
@@ -26,6 +26,9 @@ define(function(require) {
                 name: '',
                 email: ''
             }
+            setTimeout(function(){
+            $('#username').focus();
+        },200);
 
         },
         // login procedure fired by the login button
@@ -38,7 +41,7 @@ define(function(require) {
             var val = s.$('#username').val();
 
             // if username field is not blank
-            if(val != '') {
+            //if(val != '') {
 
                 // set the user variable with name
                 s.user.name = val;
@@ -49,7 +52,7 @@ define(function(require) {
                 // grab user email
                 val = s.$('#email').val();
 
-                if(val != '') {
+                //if(val != '') {
 
                     // if the email field is not blank
                     s.user.email = val;
@@ -59,9 +62,9 @@ define(function(require) {
 
                     // trigger login event
                     Vents.trigger('login');
-                }
+               // }
 
-            }
+           //    }
         },
         // returns the user object
         getUser: function () {

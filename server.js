@@ -5,6 +5,7 @@ var application_root    = __dirname,
     http                = require('http'),
     _                   = require('underscore'),
     bodyParser          = require('body-parser'),
+    errorHandler        = require('express-error-handler'),
     methodOverride      = require('method-override');
 
     Schema              = mongoose.Schema,
@@ -22,6 +23,8 @@ var application_root    = __dirname,
 
     //Where to serve static content
     app.use(express.static(path.join(application_root, 'site')));
+
+    app.use( errorHandler({server: server}) );
 
 //Connect to database
 var uristring =
@@ -249,10 +252,8 @@ io.sockets.on('connection', function (socket) {
 
 var port = process.env.PORT || 3001;
 
-if (!module.parent) {
 
     server.listen(port);
 
-    // console.log("App listening on port %d in %s mode", server.address().port, app.settings.env);
+    console.log("App listening on port %d in %s mode", server.address().port, app.settings.env);
 
-}

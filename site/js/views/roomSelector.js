@@ -1,11 +1,13 @@
 define(function(require) {
     var $           = require('jquery'),
         _           = require('underscore'),
-        Backbone    = require('backbone');
+        Backbone    = require('backbone'),
+        RoomSelectorT        = require('text!templates/roomSelector.html');
 
     RoomSelector = Backbone.View.extend({
         tagName: 'div',
-        className: 'listItem',
+        className: 'roomListItem',
+        template: _.template(RoomSelectorT),
 
         events: {
             'click': 'open'
@@ -22,15 +24,14 @@ define(function(require) {
             s.roomViewClass = '.' + s.room + 'View';
 
             // update the text
-            s.$el.text(s.room);
+            s.$el.append(s.template({name:s.room, notifications:1}));
 
         },
         open: function () {
             var s = this, top = 0;
             
             // remove the selected class from all other room selectors
-            // FIX: change listItem class name to something more descriptive 
-            $('.listItem').removeClass('selected');
+            $('.roomListItem').removeClass('selected');
 
             // add the selected class to the current selector
             s.$el.addClass('selected');
