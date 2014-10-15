@@ -1,7 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:800italic,400);
+@import url(http://fonts.googleapis.com/css?family=Raleway);
 
 body {
-    font-family: 'Verdana';
+    font-family: 'Open Sans';
     color: #545454;
 }
 input {
@@ -21,8 +22,9 @@ input:focus{
 #loginlogo{
   margin-left:24%;
   font-size: 70px;
+  font-weight: 400;
   font-family: Open Sans;
-  color:#333;
+  color:#111;
 }
 
 #signin {
@@ -46,47 +48,49 @@ input:focus{
 }
 #username:focus, #email:focus {
   border-left: 7px solid #70d725;
+  transition:0.2s;
 }
 
 #login-button {
+    font-weight: 800;
+    letter-spacing: 0px;
     position: relative;
     margin-left: 24%;
     margin-top: 30px;
-    padding:10px;
-    font-size: 32px;
+    padding:10px 20px 10px 20px;
+    font-size: 18px;
     background: black;
     border-radius: 10px;
-    border: 3px solid black;
+    border: 2px solid black;
     color: white;
+}
+
+#login-button:hover{
+  background:white;
+  color: black;
+  cursor: pointer;
 }
 
 /******************room select*************************/
 #abovechat{
   position: absolute;
   height:100%;
-  border:1px solid black;
+  border-right:1px solid #f3f3f3;
   width:180px;
   z-index: 5;
-}
+  background: white;
 
-#roompagetitle{
-  font-size: 22px;
-  padding-left: 5px;
-  font-family: Open Sans;
-  color:#333;
-  width:100%;
 }
 
 /********avatar*******************/
 #userInfo {
-    left:10px;
     display: block;
-    font-style: italic;
-    font-size: 14px;
-    border-bottom: 2px solid black;
+    font-size: 18px;
+    border-bottom: 1px solid #f3f3f3;
     height: 40px;
-    width:180px;
-    padding-top:5px;
+    width:170px;
+    padding:5px;
+
 }
 
 #userInfo .name {
@@ -95,28 +99,91 @@ input:focus{
     font-size: 18px;
     font-weight: bold;
     float:left;
+    color:#444;
+    font-family: Open Sans;
 }
-.userImg {
-    margin-left: 5px;
-    display: inline-block;
-    float:left;
+
+#userImg{
+  margin-left: 5px;
+  margin-top:5px;
+  border-radius: 50%;
+  height:30px;
+  width: 30px;
+  float:left;
 }
 /*****************************************/
 #room-select{
   position:relative;
 }
 
-#newRoombar {
+#newRoom {
+  position:relative;
+  top:0px;
+  padding:5px;
+  left:0px;
   width: 80%;
-  height: 20px;
-  margin-left:15px;
-  font-size: 15px;
+  height:100%;
+  font-size: 20px;
   float:left;
+  outline:0;
+  border: 0px;
+  background: white;
+  border-left: 2px solid #d3d3d3;
+}
+
+
+/*******************************************/
+.roomname{
+  float:left;
+}
+.notificationIcon{
+  float:right;
+  text-align: center;
+  /*border: 1px solid #70d725;*/
+  border: 1px solid #DA3610;
+  background: #DA3610;
+  border-radius: 50%;
+  height:17px;
+  width: 17px;
+  margin-top: 3px;
+  /*color:#70d725;*/
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+::-webkit-input-placeholder {
+   color: #aaa;
+   font-style: italic;
+   font-weight: 100;
+}
+
+#newRoom::-webkit-input-placeholder{
+  font-size: 15px;
+  font-style: normal;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: grey;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: red;  
+}
+
+:-ms-input-placeholder {  
+   color: red;  
+}
+
+#newRoom:focus{
+  border-left: 4px solid #70d725;
+  transition:0.2s;
 }
 
 #newroombutton{
-  float:left;
-  height:25px;
+  position:absolute;
+  left:-99999999px;
   border-radius:10px;
   background:black;
   color:white;
@@ -125,14 +192,24 @@ input:focus{
 }
 
 #roomList {
-  position: absolute;
-  margin-top: 40px;
-  width:170px;
+  float:left;
+  width:180px;
   z-index: 6;
-  border:3px solid black;
+  padding-top: 0px;
 }
 
+.roomListItem {
+  display: block;
+  height: 25px;
+  padding: 5px;
+  font-size: 20px;
+}
 
+#roomHandler {
+    float: left;
+    display: inline;
+    width: 15%;
+}
 
 
 
@@ -153,10 +230,11 @@ input:focus{
 }
 
 .feeds {
-  margin-left: 185px;
+  margin-left: 190px;
   position: relative;
   height: 100%;
-  background:#eee;
+  /*border:4px solid #8DE55f;*/
+  z-index: 8;
 }
 .userList {
     float: right;
@@ -164,6 +242,7 @@ input:focus{
 }
 body {
     height: 100%;
+    margin:0px;
 }
 
 #container {
@@ -265,11 +344,7 @@ body {
   padding: 5px;
   border-top: 1px solid #f3f3f3;
 }
-.listItem {
-  display: block;
-  padding: 5px;
-  font-size: 20px;
-}
+
 .input {
   height: 20px;
   border: 1px solid black;
@@ -298,20 +373,20 @@ textarea.input {
 
 }
 .selected {
-  background: #f3f3f3;
-
+  background: #70d725;
+  color:white;
 }
+.selected:hover{
+  transition:0.2s;
+}
+
 .show {
   display: inline;
 
 }
 
 
-#roomHandler {
-    float: left;
-    display: inline;
-    width: 15%;
-}
+
 .deleted {
     font-style: italic;
     color: gray;

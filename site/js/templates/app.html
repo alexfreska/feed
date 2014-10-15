@@ -1,16 +1,13 @@
 <div id="abovechat">
 
 <div id="userInfo">
-    <div class="userImg"><img src=<%= "http://www.gravatar.com/avatar/"+ user.hash + "?s=60" %>height="30px" width="30px" id="userImg" alt="image" title=<%= user.name %>></div>
+    <div class="userImg"><img src=<%= "http://www.gravatar.com/avatar/"+ user.hash + "?s=60" %> id="userImg" alt="image" title=<%= user.name %>></div>
     <div class="name"><%= user.name %></div>
 </div>
 
-<div id="roompagetitle">Add New Room</div>
-
-
 <div id="room-select">
 <form id="addRoom" action="#">  
-    <input type="text" id="newRoombar"></input>
+    <input autocomplete="off" placeholder="join room.." type="text" id="newRoom"></input>
     <button id="newroombutton" class="submit">Add</button>
 </form>
 
