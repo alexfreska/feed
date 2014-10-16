@@ -1,10 +1,14 @@
 <div> 
 <div class="userImg"><img src=<%= "http://www.gravatar.com/avatar/"+ data.hash + "?s=40" %> id="userImg" alt="image" title=<%= data.username %>></div>
+<div id="postusername"><%= data.username %></div>
+
+
 <div class="content">
     <div class="text">
         <%= data.text %>
     </div>
-    <div class="delete small">delete</div>
+    <div class="delete">x</div>
 </div>
+
 <time class="timeago small" datetime=<%= data.createdAt %>></time>
 </div>
