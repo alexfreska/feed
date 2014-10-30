@@ -1,0 +1,5 @@
+.dockerignore
+BUILD.md
+fig.yml
+.git/
+.gitignore
