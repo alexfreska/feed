@@ -1,0 +1,21 @@
+mongo:
+    build: docker/mongo
+    ports:
+        - "27017:27017"
+server:
+    build: docker/node
+
+    # Bundle app's source code into /code in container
+    volumes:
+        - .:/code
+
+    # Set working directory for "entrypoint" and "command" option
+    working_dir: /code
+
+    # Run this command when the container starts
+    command: node example.js
+
+    ports:
+        - "80:80"
+    links:
+        - mongo:db
