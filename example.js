@@ -1,6 +1,6 @@
 var express = require('express'),
-    mongoose = require('mongoose'),
-    passport = require('passport');
+    mongoose = require('mongoose');
+    // passport = require('passport');
 
 // Initiate components ---------------------------------------------------------
 
@@ -16,7 +16,7 @@ app.get('/', function (request, response) {
     response.send("Now I'm ready to start!");
 });
 
-var server = app.listen(80, function () {
+var server = app.listen(5006, function () {
     var host = server.address().address,
         port = server.address().port;
 
@@ -26,6 +26,9 @@ var server = app.listen(80, function () {
 // MONGODB ---------------------------------------------------------------------
 
 var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Mongoose connection error!'));
+
 db.once('open', function () {
     var bandSchema = mongoose.Schema({
         name: String,
