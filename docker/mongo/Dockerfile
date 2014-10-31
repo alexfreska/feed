@@ -6,7 +6,7 @@ RUN apt-get update
 ENV MONGO_VERSION 2.6.5
 
 # Install depedencies
-RUN apt-get -y install curl
+RUN apt-get install -y curl
 
 # Install Mongo
 RUN curl -o /usr/local/bin/gosu -SL \
@@ -32,6 +32,8 @@ VOLUME /data/db
 # Expose MongoDB to other containers through default MongoDB port
 EXPOSE 27017
 
-# Run container as 'mongod' executable
-CMD ["mongod", "--smallfiles"]
+# Configure container to run as 'mongod' executable
+ENTRYPOINT ["mongod"]
 
+# Provide a default argument for the entrypoint
+CMD ["--smallfiles"]
