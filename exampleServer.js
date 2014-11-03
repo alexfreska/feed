@@ -1,10 +1,12 @@
-var express = require('express'),
+var path = require('path'),
+    express = require('express'),
     mongoose = require('mongoose'),
     passport = require('passport');
 
 // Initiate components ---------------------------------------------------------
 
 var app = express();
+app.use(express.static(__dirname + '/client'));
 
 // We make use of an environment variable provided by Docker to access the
 // 'mongo' container.
@@ -12,8 +14,8 @@ mongoose.connect('mongodb://' + process.env.DB_PORT_27017_TCP_ADDR + '/test');
 
 // NODE ------------------------------------------------------------------------
 
-app.get('/', function (request, response) {
-    response.send("Now I'm ready to start!");
+app.get('/example', function (request, response) {
+    console.log("Now I'm ready to start!");
 });
 
 var server = app.listen(80, function () {
