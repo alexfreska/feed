@@ -1,5 +1,7 @@
 var path = require('path'),
+    fs = require('fs'),
     express = require('express'),
+    bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     passport = require('passport');
 
@@ -15,13 +17,30 @@ var WEB_PORT = DOCKER_MONGODB_ADDR ? 80 : 1337;
 // Initiate components ---------------------------------------------------------
 
 var app = express();
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(path.join(__dirname, '/client')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // We make use of an environment variable provided by Docker to access the
 // 'mongo' container.
 mongoose.connect('mongodb://' + MONGODB_ADDR + '/test');
 
 // NODE ------------------------------------------------------------------------
+// App logic -------------------------------------------------------------------
+var comments = JSON.parse(fs.readFileSync('_example.json'));
+
+// Routing ---------------------------------------------------------------------
+
+app.get('/example.json', function (request, response) {
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify(comments));
+});
+
+app.post('/example.json', function (request, response) {
+    comments.push(request.body);
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify(comments));
+});
 
 // respond to favicon requests
 app.get('/favicon.ico', function (request, response) {
@@ -63,8 +82,6 @@ app.get('*', function (request, response) {
 
 });
 
-
-
 var server = app.listen(WEB_PORT, function () {
     var host = server.address().address,
         port = server.address().port;
@@ -97,5 +114,4 @@ db.once('open', function () {
 
 // PASSPORT --------------------------------------------------------------------
 app.post('/login', function (request, response) {
-    response.send
 });

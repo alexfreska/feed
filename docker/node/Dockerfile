@@ -24,14 +24,21 @@ RUN wget http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.gz \
     && cd node-v$NODE_VERSION \
     && ./configure && make && make install
 
-# Install npm packages
-RUN npm install --save \
-    express@4.9.8 \
-    socket.io@1.1.0 \
-    passport@0.2.0 \
-    mongoose@3.8.18 \
-    react@0.12.0 \
-    react-tools@0.12.0
+# Run `npm install` if package.json changes; otherwise, Docker will use cache.
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install --unsafe-perm
+
+# Create directory for app's code
+RUN mkdir -p /code && cp -a /tmp/node_modules /code
+
+# Exclude npm cache from the image
+VOLUME /root/.npm
+
+# Bundle app's source code into /code in container
+ADD . /code
+
+# Set working directory for "entrypoint" and "command" options
+WORKDIR /code
 
 # Expose Node to other containers through default HTTP port
 EXPOSE 80
